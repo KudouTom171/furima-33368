@@ -1,46 +1,73 @@
 # テーブル設計
 
-## users テーブル
+## User テーブル
 
-| Column                 | Type    | Options     |
-| -----------------------| ------- | ----------- |
-| nickname               | string  | null: false |
-| mail                   | string  | null: false |
-| password               | string  | null: false |
-| password_confirmation  | string  | null: false |
-| last_name              | string  | null: false |
-| first_name             | string  | null: false |
-| last_name_kana         | string  | null: false |
-| first_name_kana        | string  | null: false |
-| birth_year             | integer | null: false |
-| birth_month            | integer | null: false |
-| birth_day              | integer | null: false |
+| Column             | Type   | Options      |
+| -------------------| ------ | ------------ |
+| nickname           | string | null: false  |
+| email              | string | unique: true |
+| encrypted_password | string | null: false  |
+| last_name          | string | null: false  |
+| first_name         | string | null: false  |
+| last_name_kana     | string | null: false  |
+| first_name_kana    | string | null: false  |
+| birthday           | date   | null: false  |
 
-## saleitems テーブル
+### Association
 
-| Column       | Type          | Options                        |
-| ------------ | ------------- | ------------------------------ |
-| user_id      | references    | null: false, foreign_key: true |
-| image        | ActiveStorage | null: false                    |
-| category     | ActiveHash    | null: false, foreign_key: true |
-| status       | ActiveHash    | null: false, foreign_key: true |
-| shipping_fee | ActiveHash    | null: false, foreign_key: true |
-| address      | ActiveHash    | null: false, foreign_key: true |
-| lead_time    | ActiveHash    | null: false, foreign_key: true |
-| price        | integer       | null: false                    |
+- has_many :saleitems
+- has_many :purchasedhistories
 
-## purchaseitems テーブル
+## SaleItem テーブル
+
+| Column          | Type       | Options                        |
+| --------------- | -----------| ------------------------------ |
+| user            | references | null: false, foreign_key: true |
+| item_name       | integer    | null: false                    |
+| item_detail     | text       | null: false                    |
+| category_id     | integer    | null: false, foreign_key: true |
+| status_id       | integer    | null: false, foreign_key: true |
+| shipping_fee_id | integer    | null: false, foreign_key: true |
+| prefecture_id   | integer    | null: false, foreign_key: true |
+| lead_time_id    | integer    | null: false, foreign_key: true |
+| price           | integer    | null: false                    |
+
+### Association
+
+- belongs_to :user
+- has_one :shippingaddress
+- belongs_to :category
+- belongs_to :status
+- belongs_to :shipping_fee
+- belongs_to :prefecture
+- belongs_to :lead_time
+
+## ShippingAddress テーブル
 
 | Column             | Type       | Options                        |
-| ------------------ | ---------- | ------------------------------ |
-| user_id            | references | null: false, foreign_key: true |
-| card_no            | integer    | null: false                    |
-| card_valid_month   | integer    | null: false                    |
-| card_valid_year    | integer    | null: false                    |
-| card_security_code | integer    | null: false                    |
+| ------------------ | ---------- | -------------------------------|
+| saleitem_id        | references | null: false, foreign_key: true |
 | postal_code        | string     | null: false                    |
-| prefecture         | ActiveHash | null: false                    |
+| prefecture_id      | integer    | null: false                    |
 | city               | string     | null: false                    |
-| house_no           | string     | null: false                    |
-| building_name      | string     | null: false                    |
-| phone_no           | integer    | null: false                    |
+| house_number       | string     | null: false                    |
+| building_name      | string     |                                |
+| phone_number       | string     | null: false                    |
+
+### Association
+
+- belongs_to :saleitem
+- has_one :purchasehistory
+- belongs_to :prefecture
+
+##  Purchasedhistory
+
+| Column             | Type       | Options                        |
+| ------------------ | ---------- | -------------------------------|
+| user               | references | null: false, foreign_key: true |
+| shippingaddress_id | references | null: false, foreign_key: true |
+
+### Association
+
+- belongs_to :user
+- belongs_to :shippingaddress
