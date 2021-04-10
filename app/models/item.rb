@@ -16,11 +16,14 @@ class Item < ApplicationRecord
     validates :image
   end
 
-  validates :category_id, numericality: { other_than: 1 } 
-  validates :status_id, numericality: { other_than: 1 } 
-  validates :shipping_fee_id, numericality: { other_than: 1 } 
-  validates :prefecture_id, numericality: { other_than: 1 } 
-  validates :lead_time_id, numericality: { other_than: 1 } 
+  with_options numericality: { other_than: 1} do
+    validates :category_id 
+    validates :status_id
+    validates :shipping_fee_id
+    validates :prefecture_id
+    validates :lead_time_id
+  end
+
   validates :price, numericality: {only_integer: true, greater_than_or_equal_to: 300, less_than_or_equal_to: 9999999}, format: { with: /\A[0-9]+\z/, message: '半角数字を使用してください' } 
 
 end
