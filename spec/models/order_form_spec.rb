@@ -9,9 +9,23 @@ RSpec.describe OrderForm, type: :model do
       it '正しい内容を入力すれば新規登録できる' do
         expect(@order_form).to be_valid
       end
+      it '建物名が空欄でも新規登録できる' do
+        @order_form.building_name = ""
+        expect(@order_form).to be_valid
+      end
     end
 
     context '商品の購入に問題がある場合' do
+      it "user_idが必須であること" do
+        @order_form.user_id = ""
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include "User can't be blank"
+      end
+      it "item_idが必須であること" do
+        @order_form.item_id = ""
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include "Item can't be blank"
+      end
       it "郵便番号が必須であること" do
         @order_form.postal_code = ""
         @order_form.valid?
@@ -54,6 +68,11 @@ RSpec.describe OrderForm, type: :model do
       end
       it "電話番号が半角数字であること" do
         @order_form.phone_number = "１２３４５６７８９"
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include "Phone number is invalid. Input half-width characters"
+      end
+      it "電話番号に文字が混じっていると登録できないこと" do
+        @order_form.phone_number = "111あああ111"
         @order_form.valid?
         expect(@order_form.errors.full_messages).to include "Phone number is invalid. Input half-width characters"
       end
