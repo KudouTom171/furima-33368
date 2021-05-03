@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe OrderForm, type: :model do
   before do
     @order_form = FactoryBot.build(:order_form)
+    @order_form.user_id = 1
+    @order_form.item_id = 1
   end
   describe '商品の購入' do
     context '商品の購入に問題がない場合' do
