@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_item, only: [:index, :create]
-  before_action :check_ordered , only: [:index, :create]
+  before_action :check_ordered
   
   def index
     @order_form = OrderForm.new
