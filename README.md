@@ -15,10 +15,10 @@
 
 ### Association
 
-- has_many :saleitems
-- has_many :purchasedhistories
+- has_many :items
+- has_many :orders
 
-## saleitems テーブル
+## items テーブル
 
 | Column          | Type       | Options                        |
 | --------------- | -----------| ------------------------------ |
@@ -35,7 +35,7 @@
 ### Association
 
 - belongs_to :user
-- has_one :purchasedhistory
+- has_one :order
 - belongs_to :category
 - belongs_to :status
 - belongs_to :shipping_fee
@@ -52,22 +52,22 @@
 | house_number       | string     | null: false                    |
 | building_name      | string     |                                |
 | phone_number       | string     | null: false                    |
-| purchasedhistory   | references | null: false, foreign_key: true |
+| order_id           | references | null: false, foreign_key: true |
 
 ### Association
 
-- belongs_to :purchasedhistory
+- belongs_to :order
 - belongs_to :prefecture
 
-##  purchasedhistories
+##  orders テーブル
 
 | Column          | Type       | Options                        |
 | --------------- | ---------- | -------------------------------|
-| user            | references | null: false, foreign_key: true |
-| sale_item       | references | null: false, foreign_key: true |
+| user_id         | references | null: false, foreign_key: true |
+| item_id         | references | null: false, foreign_key: true |
 
 ### Association
 
 - belongs_to :user
 - has_one :shippingaddress
-- belongs_to :saleitem
+- belongs_to :item
